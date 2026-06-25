@@ -35,20 +35,30 @@
             maballi.disabled = true;
 
             try {
-                // Mun hada Injin kamo bidiyo da tabbatacciyar Gadar AllOrigins don kaucewa "Failed to fetch"
+                // Mun canza daga /raw zuwa /get domin tabbatar da tsaron JSON
                 let ainihinKafa = "https://api.ryzendesu.vip/api/downloader/fbdl?url=" + encodeURIComponent(linkDinBidiyo);
-                let kafa = "https://api.allorigins.win/raw?url=" + encodeURIComponent(ainihinKafa);
+                let kafa = "https://api.allorigins.win/get?url=" + encodeURIComponent(ainihinKafa);
                 
                 let sakamako = await fetch(kafa);
-                let bayanai = await sakamako.json();
+                let amsarGada = await sakamako.json(); // Wannan ba zai kawo matsalar "Unexpected end" ba
 
-                // Muna duba ko mun samu nasarar dauko bayanan
-                if (bayanai && bayanai.data) {
-                    alert("✅ An kamo bidiyon! Za a fara saukewa...");
-                    // Zai dauko link din bidiyon mai inganci (HD) ko na kowa (SD) ko na asali
-                    window.location.href = bayanai.data.hd || bayanai.data.sd || bayanai.data.url; 
+                // Muna duba ko AllOrigins ta dawo da wani abu a cikin 'contents'
+                if (amsarGada.contents) {
+                    try {
+                        // Sannan mu fassara asalin bayanan API din
+                        let bayanai = JSON.parse(amsarGada.contents);
+                        
+                        if (bayanai && bayanai.data) {
+                            alert("✅ An kamo bidiyon! Za a fara saukewa...");
+                            window.location.href = bayanai.data.hd || bayanai.data.sd || bayanai.data.url; 
+                        } else {
+                            alert("⚠️ API din bai dawo da bidiyon ba. Wataqila tsarin tsaro ne ya toshe shi.");
+                        }
+                    } catch (kuskurenFassara) {
+                        alert("⚠️ API din ya dawo da bayanan da ba za su fassaru ba (Wataqila shafin tsaro na Cloudflare ne ya tare shi).");
+                    }
                 } else {
-                    alert("⚠️ Ba a samu bidiyon ba. Ka tabbatar link din da ka saka na Facebook ne mai kyau.");
+                    alert("⚠️ API din ya ki bayar da wata amsa, ya dawo da fanko.");
                 }
 
             } catch (matsala) {
