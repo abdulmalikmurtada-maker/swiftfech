@@ -35,24 +35,33 @@
             maballi.disabled = true;
 
             try {
-                // Mun canza Gada gaba daya zuwa corsproxy.io wacce take da karfi
-                let ainihinKafa = "https://api.ryzendesu.vip/api/downloader/fbdl?url=" + encodeURIComponent(linkDinBidiyo);
+                // SABON INJI: Mun sanya BK9 API wanda yafi karfi
+                let ainihinKafa = "https://bk9.fun/download/fb?url=" + encodeURIComponent(linkDinBidiyo);
                 let kafa = "https://corsproxy.io/?" + encodeURIComponent(ainihinKafa);
                 
                 let sakamako = await fetch(kafa);
                 
-                // Muna duba ko Gadar ta bada cikakkiyar amsa kafin mu fassara
                 if (!sakamako.ok) {
-                    throw new Error("Gadar ta ki bayar da hadin kai ko Injin ya ki (Status: " + sakamako.status + ")");
+                    throw new Error("Gadar ta ki bayar da hadin kai (Status: " + sakamako.status + ")");
                 }
 
                 let bayanai = await sakamako.json(); 
 
-                if (bayanai && bayanai.data) {
+                // Wannan tsarin yana duba inda sabon injin ya ajiye link din bidiyon
+                let bidiyoGuda = null;
+                if (bayanai.BK9) {
+                    bidiyoGuda = bayanai.BK9.hd || bayanai.BK9.sd || bayanai.BK9.video;
+                } else if (bayanai.result) {
+                    bidiyoGuda = bayanai.result.hd || bayanai.result.sd || bayanai.result.url;
+                } else if (bayanai.data) {
+                    bidiyoGuda = bayanai.data.hd || bayanai.data.sd || bayanai.data.url;
+                }
+
+                if (bidiyoGuda) {
                     alert("✅ An kamo bidiyon! Za a fara saukewa...");
-                    window.location.href = bayanai.data.hd || bayanai.data.sd || bayanai.data.url; 
+                    window.location.href = bidiyoGuda; 
                 } else {
-                    alert("⚠️ Ba a samu bidiyon ba a cikin amsar da API din ya bayar.");
+                    alert("⚠️ API din ya kawo amsa, amma ba a ga ainihin bidiyon ba. Wataqila link din bai da kyau ko kuma kariya ta hana.");
                 }
 
             } catch (matsala) {
