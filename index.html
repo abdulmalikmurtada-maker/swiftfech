@@ -1,4 +1,27 @@
-<script>
+<!DOCTYPE html>
+<html lang="ha">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwiftFetch - Kamo Bidiyo</title>
+    <style>
+        /* Wannan yana gyara kwalliyar shafin ne */
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #f4f4f9; }
+        input { padding: 12px; width: 80%; max-width: 350px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; }
+        button { padding: 12px 25px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:disabled { background-color: #cccccc; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+
+    <h2>SwiftFetch 🚀</h2>
+    <p>Saka link din bidiyo daga kowa da kowa</p>
+
+    <input type="text" id="linkInput" placeholder="Saka link a nan...">
+    <br>
+    <button id="maballiBtn" onclick="nemoBidiyo()">Kamo Bidiyo</button>
+
+    <script>
         async function nemoBidiyo() {
             let linkDinBidiyo = document.getElementById("linkInput").value;
             let maballi = document.getElementById("maballiBtn");
@@ -35,4 +58,6 @@
             maballi.innerHTML = tsohonRubutu;
             maballi.disabled = false;
         }
-</script>
+    </script>
+</body>
+</html>
