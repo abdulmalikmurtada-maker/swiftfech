@@ -1,27 +1,4 @@
-<!DOCTYPE html>
-<html lang="ha">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SwiftFetch - Kamo Bidiyo</title>
-    <style>
-        /* Wannan yana gyara kwalliyar shafin ne */
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #f4f4f9; }
-        input { padding: 12px; width: 80%; max-width: 350px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ccc; }
-        button { padding: 12px 25px; background-color: #28a745; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
-        button:disabled { background-color: #cccccc; cursor: not-allowed; }
-    </style>
-</head>
-<body>
-
-    <h2>SwiftFetch 🚀</h2>
-    <p>Saka link din bidiyo daga kowa da kowa</p>
-    
-    <input type="text" id="linkInput" placeholder="Saka link a nan...">
-    <br>
-    <button id="maballiBtn" onclick="nemoBidiyo()">Kamo Bidiyo</button>
-
-    <script>
+<script>
         async function nemoBidiyo() {
             let linkDinBidiyo = document.getElementById("linkInput").value;
             let maballi = document.getElementById("maballiBtn");
@@ -36,32 +13,26 @@
             maballi.disabled = true;
 
             try {
-                // Wannan shine layin da muka gyara na Cobalt API
+                // SABON INJIN KAMO BIDIYO (Baya bukatan CORS Proxy)
+                let kafa = "https://api.ryzendesu.vip/api/downloader/fbdl?url=" + encodeURIComponent(linkDinBidiyo);
                 
-   let sakamako = await fetch("https://corsproxy.io/?https://co.wuk.sh/api/json", {
-                    method: "POST",
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ url: linkDinBidiyo })
-                });
-
+                let sakamako = await fetch(kafa);
                 let bayanai = await sakamako.json();
 
-                if (bayanai.url) {
+                // Muna duba ko mun samu nasarar dauko bayanan
+                if (bayanai && bayanai.data) {
                     alert("✅ An kamo bidiyon! Za a fara saukewa...");
-                    window.location.href = bayanai.url;
+                    // Zai dauko link din bidiyon mai inganci (HD) ko na kowa (SD)
+                    window.location.href = bayanai.data.hd || bayanai.data.sd; 
                 } else {
-                    alert("⚠️ Ba a samu bidiyon ba. Ka duba ko link din yana da matsala.");
+                    alert("⚠️ Ba a samu bidiyon ba. Ka tabbatar link din da ka saka na Facebook ne mai kyau.");
                 }
 
             } catch (matsala) {
-                // Wannan shine sabon layin da zai fallasa mana ainihin matsalar
                 alert("Ainihin Matsalar ita ce: " + matsala.message);
             }
 
             maballi.innerHTML = tsohonRubutu;
             maballi.disabled = false;
         }
-    </script>
+</script>
