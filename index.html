@@ -86,25 +86,14 @@
                     bidiyoHD = bayanai.data.hd;
                     bidiyoSD = bayanai.data.sd || bayanai.data.url;
                 }
-
-                if (bidiyoHD || bidiyoSD) {
-                    sakamakoDiv.innerHTML = `
-                        <p>✅ An samu bidiyon! Zaɓi ingancin da kake so:</p>
-                        ${bidiyoHD ? `<a href="${bidiyoHD}" download><button>⬇️ Sauke HD</button></a>` : ""}
-                        ${bidiyoSD ? `<a href="${bidiyoSD}" download><button style="background:#007bff">⬇️ Sauke SD</button></a>` : ""}
-                    `;
-                } else {
-                    sakamakoDiv.innerHTML = "⚠️ An samu amsa amma babu bidiyo a ciki. Duba link din.";
-                    console.log("Amsar API:", bayanai);
-                }
-
-            } catch (matsala) {
-                sakamakoDiv.innerHTML = "❌ Matsala: " + matsala.message;
+            if (bidiyoHD || bidiyoSD) {
+    sakamakoDiv.innerHTML = `
+        <p>✅ An samu bidiyon! Zaɓi ingancin da kake so:</p>
+        ${bidiyoHD ? `<a href="${bidiyoHD}" download><button>⬇️ Sauke HD</button></a>` : ""}
+        ${bidiyoSD ? `<a href="${bidiyoSD}" download><button style="background:#007bff">⬇️ Sauke SD</button></a>` : ""}
+    `;
+} else {
+    sakamakoDiv.innerHTML = "⚠️ An samu amsa amma babu bidiyo a ciki. Duba link din.";
+    console.log("Amsar API:", bayanai);
+    sakamakoDiv.innerHTML += "<br><small style='color:red'>Debug: " + JSON.stringify(bayanai) + "</small>";
             }
-
-            maballi.innerHTML = "Kamo Bidiyo";
-            maballi.disabled = false;
-        }
-    </script>
-</body>
-</html>
