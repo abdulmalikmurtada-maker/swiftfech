@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SwiftFetch - Kamo Bidiyo</title>
     <style>
-        /* Wannan yana gyara kwalliyar shafin ne */
         body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #f4f4f9; }
         input { padding: 12px; width: 80%; max-width: 350px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; }
         button { padding: 12px 25px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
@@ -36,8 +35,9 @@
             maballi.disabled = true;
 
             try {
-                // SABON INJIN KAMO BIDIYO (Baya bukatan CORS Proxy)
-                let kafa = "https://api.ryzendesu.vip/api/downloader/fbdl?url=" + encodeURIComponent(linkDinBidiyo);
+                // Mun hada Injin kamo bidiyo da tabbatacciyar Gadar AllOrigins don kaucewa "Failed to fetch"
+                let ainihinKafa = "https://api.ryzendesu.vip/api/downloader/fbdl?url=" + encodeURIComponent(linkDinBidiyo);
+                let kafa = "https://api.allorigins.win/raw?url=" + encodeURIComponent(ainihinKafa);
                 
                 let sakamako = await fetch(kafa);
                 let bayanai = await sakamako.json();
@@ -45,8 +45,8 @@
                 // Muna duba ko mun samu nasarar dauko bayanan
                 if (bayanai && bayanai.data) {
                     alert("✅ An kamo bidiyon! Za a fara saukewa...");
-                    // Zai dauko link din bidiyon mai inganci (HD) ko na kowa (SD)
-                    window.location.href = bayanai.data.hd || bayanai.data.sd; 
+                    // Zai dauko link din bidiyon mai inganci (HD) ko na kowa (SD) ko na asali
+                    window.location.href = bayanai.data.hd || bayanai.data.sd || bayanai.data.url; 
                 } else {
                     alert("⚠️ Ba a samu bidiyon ba. Ka tabbatar link din da ka saka na Facebook ne mai kyau.");
                 }
