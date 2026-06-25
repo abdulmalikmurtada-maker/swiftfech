@@ -23,7 +23,6 @@
     <div id="sakamakoDiv"></div>
 
     <script>
-        // CORS proxies da za a gwada daya bayan daya
         const corsProxies = [
             "https://api.allorigins.win/raw?url=",
             "https://corsproxy.io/?",
@@ -35,16 +34,15 @@
                 try {
                     let kafa = proxy + encodeURIComponent(url);
                     let sakamako = await fetch(kafa, { headers: { 'Accept': 'application/json' } });
-                    let rubutu = await sakamako.text(); // karanta a matsayin text da farko
+                    let rubutu = await sakamako.text();
 
-                    // Duba ko JSON ne gaske
                     if (rubutu.trim().startsWith("<")) {
                         console.warn("Proxy ya mayar da HTML, ana gwada wani...");
-                        continue; // gwada proxy na gaba
+                        continue;
                     }
 
                     let bayanai = JSON.parse(rubutu);
-                    return bayanai; // idan ya yi nasara, mayar da bayanai
+                    return bayanai;
 
                 } catch (e) {
                     console.warn("Proxy ya gaza:", proxy, e.message);
@@ -72,7 +70,6 @@
                 let apiUrl = "https://bk9.fun/download/fb?url=" + encodeURIComponent(linkDinBidiyo);
                 let bayanai = await gwadaFetch(apiUrl);
 
-                // Nemo link din bidiyo a cikin amsar API
                 let bidiyoHD = null;
                 let bidiyoSD = null;
 
@@ -86,14 +83,26 @@
                     bidiyoHD = bayanai.data.hd;
                     bidiyoSD = bayanai.data.sd || bayanai.data.url;
                 }
-            if (bidiyoHD || bidiyoSD) {
-    sakamakoDiv.innerHTML = `
-        <p>✅ An samu bidiyon! Zaɓi ingancin da kake so:</p>
-        ${bidiyoHD ? `<a href="${bidiyoHD}" download><button>⬇️ Sauke HD</button></a>` : ""}
-        ${bidiyoSD ? `<a href="${bidiyoSD}" download><button style="background:#007bff">⬇️ Sauke SD</button></a>` : ""}
-    `;
-} else {
-    sakamakoDiv.innerHTML = "⚠️ An samu amsa amma babu bidiyo a ciki. Duba link din.";
-    console.log("Amsar API:", bayanai);
-    sakamakoDiv.innerHTML += "<br><small style='color:red'>Debug: " + JSON.stringify(bayanai) + "</small>";
+
+                if (bidiyoHD || bidiyoSD) {
+                    sakamakoDiv.innerHTML = `
+                        <p>✅ An samu bidiyon! Zaɓi ingancin da kake so:</p>
+                        ${bidiyoHD ? `<a href="${bidiyoHD}" download><button>⬇️ Sauke HD</button></a>` : ""}
+                        ${bidiyoSD ? `<a href="${bidiyoSD}" download><button style="background:#007bff">⬇️ Sauke SD</button></a>` : ""}
+                    `;
+                } else {
+                    sakamakoDiv.innerHTML = "⚠️ An samu amsa amma babu bidiyo a ciki. Duba link din.";
+                    console.log("Amsar API:", bayanai);
+                    sakamakoDiv.innerHTML += "<br><small style='color:red'>Debug: " + JSON.stringify(bayanai) + "</small>";
+                }
+
+            } catch (matsala) {
+                sakamakoDiv.innerHTML = "❌ Matsala: " + matsala.message;
             }
+
+            maballi.innerHTML = "Kamo Bidiyo";
+            maballi.disabled = false;
+        }
+    </script>
+</body>
+</html>
